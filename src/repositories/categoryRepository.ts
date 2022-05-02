@@ -15,7 +15,28 @@ async function searchCategories(searchQuery: string) {
   });
 }
 
+async function getCategoryByName(category: string) {
+  const search = await prisma.category.findUnique({
+    where: {
+      name: category,
+    },
+  });
+  return search;
+}
+
+async function getCategory(categoryId: number) {
+  const cateogory = await prisma.category.findFirst({
+    where: {
+      id: categoryId,
+    },
+  });
+
+  return cateogory;
+}
+
 export default {
   findMany,
   searchCategories,
+  getCategory,
+  getCategoryByName,
 };
