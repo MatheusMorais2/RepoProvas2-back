@@ -71,5 +71,14 @@ model Test {
   teacherDiscipline   TeacherDiscipline @relation(fields: [teacherDisciplineId], references: [id])
   teacherDisciplineId Int
 
+  View View[]
   @@map("tests")
+}
+
+model View {
+  id     Int  @id @default(autoincrement())
+  test   Test @relation(fields: [testId], references: [id])
+  testId Int
+
+  @@map("views")
 }

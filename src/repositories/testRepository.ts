@@ -2,6 +2,15 @@ import { prisma } from "../database.js";
 
 import { Test } from "../controllers/testController.js";
 
+async function getTestById(testId: number) {
+  const test = await prisma.test.findUnique({
+    where: {
+      id: testId,
+    },
+  });
+  return test;
+}
+
 async function getTestsByDiscipline(search: string) {
   if (search) {
     return prisma.term.findMany({
@@ -14,6 +23,11 @@ async function getTestsByDiscipline(search: string) {
                 tests: {
                   include: {
                     category: true,
+                    _count: {
+                      select: {
+                        View: true,
+                      },
+                    },
                   },
                 },
               },
@@ -36,6 +50,11 @@ async function getTestsByDiscipline(search: string) {
                 tests: {
                   include: {
                     category: true,
+                    _count: {
+                      select: {
+                        View: true,
+                      },
+                    },
                   },
                 },
               },
@@ -61,6 +80,11 @@ async function getTestsByTeachers(search: string) {
         tests: {
           include: {
             category: true,
+            _count: {
+              select: {
+                View: true,
+              },
+            },
           },
         },
       },
@@ -73,6 +97,11 @@ async function getTestsByTeachers(search: string) {
         tests: {
           include: {
             category: true,
+            _count: {
+              select: {
+                View: true,
+              },
+            },
           },
         },
       },
@@ -117,10 +146,30 @@ async function getteacherDisciplineByNames(
   return search;
 }
 
+async function increaseViews(testId: number) {
+  await prisma.view.create({
+    data: {
+      testId: testId,
+    },
+  });
+}
+
+async function getViewsById(testId: number) {
+  const views = await prisma.view.count({
+    where: {
+      testId: testId,
+    },
+  });
+  return views;
+}
+
 export default {
   getTestsByDiscipline,
   getTestsByTeachers,
   createTest,
   getteacherDiscipline,
   getteacherDisciplineByNames,
+  increaseViews,
+  getViewsById,
+  getTestById,
 };

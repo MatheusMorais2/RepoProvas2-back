@@ -36,7 +36,23 @@ export async function createTest(req: Request, res: Response) {
   return res.sendStatus(201);
 }
 
+export async function getViews(req: Request, res: Response) {
+  const testId: number = parseInt(req.params.testId);
+  const views = await testService.getViews(testId);
+
+  return res.status(200).send({ views });
+}
+
+export async function increaseViews(req: Request, res: Response) {
+  const testId: number = parseInt(req.params.testId);
+  await testService.increaseViews(testId);
+
+  return res.sendStatus(201);
+}
+
 export default {
   find,
   createTest,
+  getViews,
+  increaseViews,
 };

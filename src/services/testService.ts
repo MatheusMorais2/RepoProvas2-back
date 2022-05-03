@@ -39,7 +39,24 @@ async function createTest(testData: CreateTest) {
   await testRepository.createTest(test);
 }
 
+async function getViews(testId: number) {
+  const testSearch = await testRepository.getTestById(testId);
+  if (!testSearch) throw notFoundError("Test not found");
+
+  const views = await testRepository.getViewsById(testId);
+  return views;
+}
+
+async function increaseViews(testId: number) {
+  const testSearch = await testRepository.getTestById(testId);
+  if (!testSearch) throw notFoundError("Test not found");
+
+  await testRepository.increaseViews(testId);
+}
+
 export default {
   find,
   createTest,
+  getViews,
+  increaseViews,
 };
