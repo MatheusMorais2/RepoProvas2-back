@@ -26,7 +26,7 @@ async function find(req: Request, res: Response) {
   }
 
   const tests = await testService.find({ groupBy, search });
-  res.send({ tests });
+  res.status(200).send({ tests });
 }
 
 export async function createTest(req: Request, res: Response) {
